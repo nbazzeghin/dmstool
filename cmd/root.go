@@ -32,10 +32,13 @@ import (
 
 var cfgFile string
 
+var version = "0.0.1"
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "dmstool",
-	Short: "A tiny toolbox for geo coordinate conversions",
+	Use:     "dmstool",
+	Version: version,
+	Short:   "A tiny toolbox for geo coordinate conversions",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
