@@ -38,14 +38,18 @@ import (
 //	34 deg 58' 59.61" N, 84 deg 20' 8.75" W
 //	or
 //	110°4'21' W
-func Deg2Dec(input string) (result string) {
+func Deg2Dec(input string, mapLinks bool) (result string) {
 
 	inputSplit := strings.Split(input, ",")
 
 	if len(inputSplit) > 1 {
-		r1 := Deg2Dec(inputSplit[0])
-		r2 := Deg2Dec(inputSplit[1])
-		return r1 + " " + r2
+		r1 := Deg2Dec(inputSplit[0], false)
+		r2 := Deg2Dec(inputSplit[1], false)
+		if mapLinks {
+			return maplink(r1, r2)
+		} else {
+			return r1 + " " + r2
+		}
 	}
 
 	re := regexp.MustCompile(`s|w`)
@@ -79,4 +83,9 @@ func Deg2Dec(input string) (result string) {
 	r := fmt.Sprintf("%f", res)
 
 	return r
+}
+
+func maplink(lat string, long string) (link string) {
+	base := "http://maps.google.com/maps?z=12&t=m&q=loc:"
+	return base + lat + "+" + long
 }

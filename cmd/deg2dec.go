@@ -28,6 +28,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var mapLinks bool
+
 // deg2decCmd represents the deg2dec command
 var deg2decCmd = &cobra.Command{
 	Use:     "deg2dec \"coordinate\"",
@@ -44,12 +46,13 @@ Example Inputs:
 
 NOTE: Check your escape quotes.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		res := dmstool.Deg2Dec(args[0])
+		res := dmstool.Deg2Dec(args[0], mapLinks)
 		fmt.Println(res)
 	},
 }
 
 func init() {
+	deg2decCmd.Flags().BoolVarP(&mapLinks, "maplinks", "m", false, "Return google map links (if two coordinates have been passed)")
 	rootCmd.AddCommand(deg2decCmd)
 
 	// Here you will define your flags and configuration settings.
