@@ -1,0 +1,32 @@
+name: Release dmstool binaries
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  releases-matrix:
+    name: Release Go Binary
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # build and publish in parallel: linux/amd64
+        goos: [linux, windows, darwin]
+        goarch: [amd64, arm64]
+        exclude:
+          - goarch: arm64
+            goos: linux
+          - goarch: arm64
+            goos: windows
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests
+        run: go test -v -p=1 -timeout=0 ./...
+      - uses: wangyoucao577/go-release-action@v1.32
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          ldflags: "-s -w"
+          goversion: 1.19
+          extra_files: LICENSE README.md
